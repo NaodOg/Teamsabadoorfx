@@ -24,6 +24,7 @@ export default function Home() {
     const [showIntro, setShowIntro] = useState(true); // Show intro by default on first render
     const [hasSeenIntro, setHasSeenIntro] = useState(false);
     const [isClient, setIsClient] = useState(false);
+    const [introTextVisible, setIntroTextVisible] = useState(false);
 
     useEffect(() => {
         // Check if we're on the client side
@@ -39,13 +40,18 @@ export default function Home() {
                 setHasSeenIntro(true);
             } else {
                 // User hasn't seen the intro, the intro is already showing
-                // Set timer to hide the intro after 4 seconds to allow all animations to complete and wait 1 second
+                // First show the logo, then start the typing animation after a delay
+                setTimeout(() => {
+                    setIntroTextVisible(true);
+                }, 1500); // Delay before starting the text animation
+
+                // Set timer to hide the intro after 6 seconds to allow all animations to complete
                 const timer = setTimeout(() => {
                     setShowIntro(false);
                     // Mark that the user has seen the intro in this session
                     sessionStorage.setItem('hasSeenIntro', 'true');
                     setHasSeenIntro(true);
-                }, 4000);
+                }, 6000);
 
                 // Clean up the timer when component unmounts
                 return () => clearTimeout(timer);
@@ -83,68 +89,43 @@ export default function Home() {
                         <img
                             src="/FX LOGO.png"
                             alt="Sabador FX Logo"
-                            className="w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-contain mx-auto"
+                            className="w-48 h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 xl:w-96 xl:h-96 object-contain mx-auto"
                         />
                     </div>
 
-                    {/* Main quote with sequential letter animation */}
-                    <div className="mt-10 text-center">
+                    {/* Main quote with JavaScript-based typing animation */}
+                    <div className="mt-4 sm:mt-6 md:mt-10 text-center" style={{ opacity: introTextVisible ? 1 : 0, transition: 'opacity 0.5s ease-in-out' }}>
                         <div className="mb-4">
-                            <span className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#C76F1A] inline-block tracking-tight drop-shadow-lg">
-                                <span className="inline-block animate-char-opacity animate-delay-1">W</span>
-                                <span className="inline-block animate-char-opacity animate-delay-2">E</span>
-                                <span className="inline-block animate-char-opacity animate-delay-3">&nbsp;</span>
-                                <span className="inline-block animate-char-opacity animate-delay-4">D</span>
-                                <span className="inline-block animate-char-opacity animate-delay-5">O</span>
-                                <span className="inline-block animate-char-opacity animate-delay-6">N</span>
-                                <span className="inline-block animate-char-opacity animate-delay-7">'</span>
-                                <span className="inline-block animate-char-opacity animate-delay-8">T</span>
-                                <span className="inline-block animate-char-opacity animate-delay-9">&nbsp;</span>
-                                <span className="inline-block animate-char-opacity animate-delay-10">J</span>
-                                <span className="inline-block animate-char-opacity animate-delay-11">U</span>
-                                <span className="inline-block animate-char-opacity animate-delay-12">S</span>
-                                <span className="inline-block animate-char-opacity animate-delay-13">T</span>
-                                <span className="inline-block animate-char-opacity animate-delay-14">&nbsp;</span>
-                                <span className="inline-block animate-char-opacity animate-delay-15">S</span>
-                                <span className="inline-block animate-char-opacity animate-delay-16">U</span>
-                                <span className="inline-block animate-char-opacity animate-delay-17">P</span>
-                                <span className="inline-block animate-char-opacity animate-delay-18">P</span>
-                                <span className="inline-block animate-char-opacity animate-delay-19">L</span>
-                                <span className="inline-block animate-char-opacity animate-delay-20">Y</span>
-                                <span className="inline-block animate-char-opacity animate-delay-21">&nbsp;</span>
-                                <span className="inline-block animate-char-opacity animate-delay-22">E</span>
-                                <span className="inline-block animate-char-opacity animate-delay-23">F</span>
-                                <span className="inline-block animate-char-opacity animate-delay-24">F</span>
-                                <span className="inline-block animate-char-opacity animate-delay-25">E</span>
-                                <span className="inline-block animate-char-opacity animate-delay-26">C</span>
-                                <span className="inline-block animate-char-opacity animate-delay-27">T</span>
-                                <span className="inline-block animate-char-opacity animate-delay-28">S</span>
-                            </span>
+                            <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#C76F1A] tracking-tight drop-shadow-lg whitespace-pre">
+                                {introTextVisible && "WE DON'T JUST SUPPLY EFFECTS".split('').map((char, index) => (
+                                    <span
+                                        key={`line1-${index}`}
+                                        className="inline-block opacity-0"
+                                        style={{
+                                            animation: `fadeInUp 0.3s forwards`,
+                                            animationDelay: `${index * 0.08 + 0.2}s`
+                                        }}
+                                    >
+                                        {char === ' ' ? '\u00A0' : char}
+                                    </span>
+                                ))}
+                            </div>
                         </div>
                         <div>
-                            <span className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#E3F4E9] inline-block tracking-tight drop-shadow-lg">
-                                <span className="inline-block animate-char-opacity animate-delay-40">W</span>
-                                <span className="inline-block animate-char-opacity animate-delay-44">E</span>
-                                <span className="inline-block animate-char-opacity animate-delay-48">&nbsp;</span>
-                                <span className="inline-block animate-char-opacity animate-delay-52">C</span>
-                                <span className="inline-block animate-char-opacity animate-delay-56">R</span>
-                                <span className="inline-block animate-char-opacity animate-delay-60">E</span>
-                                <span className="inline-block animate-char-opacity animate-delay-64">A</span>
-                                <span className="inline-block animate-char-opacity animate-delay-68">T</span>
-                                <span className="inline-block animate-char-opacity animate-delay-72">E</span>
-                                <span className="inline-block animate-char-opacity animate-delay-76">&nbsp;</span>
-                                <span className="inline-block animate-char-opacity animate-delay-80">A</span>
-                                <span className="inline-block animate-char-opacity animate-delay-84">T</span>
-                                <span className="inline-block animate-char-opacity animate-delay-88">M</span>
-                                <span className="inline-block animate-char-opacity animate-delay-92">O</span>
-                                <span className="inline-block animate-char-opacity animate-delay-96">S</span>
-                                <span className="inline-block animate-char-opacity animate-delay-100">P</span>
-                                <span className="inline-block animate-char-opacity animate-delay-104">H</span>
-                                <span className="inline-block animate-char-opacity animate-delay-108">E</span>
-                                <span className="inline-block animate-char-opacity animate-delay-112">R</span>
-                                <span className="inline-block animate-char-opacity animate-delay-116">E</span>
-                                <span className="inline-block animate-char-opacity animate-delay-120">S</span>
-                            </span>
+                            <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-[#E3F4E9] tracking-tight drop-shadow-lg whitespace-pre">
+                                {introTextVisible && "WE CREATE ATMOSPHERES".split('').map((char, index) => (
+                                    <span
+                                        key={`line2-${index}`}
+                                        className="inline-block opacity-0"
+                                        style={{
+                                            animation: `fadeInUp 0.3s forwards`,
+                                            animationDelay: `${(index * 0.08) + 2.5}s` // Delay second line
+                                        }}
+                                    >
+                                        {char === ' ' ? '\u00A0' : char}
+                                    </span>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -175,88 +156,39 @@ export default function Home() {
                         animation: logo-appear 1.5s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
                     }
                     .animate-char-opacity {
-                        opacity: 0;
-                        animation: char-opacity 0.3s forwards;
+                        animation: char-opacity 0.4s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
                     }
 
-                    @keyframes char-opacity {
+                    #intro-text-container {
+                        animation: container-fade-in 0.1s 1.8s forwards;
+                    }
+
+                    @keyframes container-fade-in {
                         to { opacity: 1; }
                     }
 
-                    /* Animation delay utilities */
-                    .animate-delay-1 { animation-delay: 0.02s; }
-                    .animate-delay-2 { animation-delay: 0.04s; }
-                    .animate-delay-3 { animation-delay: 0.06s; }
-                    .animate-delay-4 { animation-delay: 0.08s; }
-                    .animate-delay-5 { animation-delay: 0.1s; }
-                    .animate-delay-6 { animation-delay: 0.12s; }
-                    .animate-delay-7 { animation-delay: 0.14s; }
-                    .animate-delay-8 { animation-delay: 0.16s; }
-                    .animate-delay-9 { animation-delay: 0.18s; }
-                    .animate-delay-10 { animation-delay: 0.2s; }
-                    .animate-delay-11 { animation-delay: 0.22s; }
-                    .animate-delay-12 { animation-delay: 0.24s; }
-                    .animate-delay-13 { animation-delay: 0.26s; }
-                    .animate-delay-14 { animation-delay: 0.28s; }
-                    .animate-delay-15 { animation-delay: 0.3s; }
-                    .animate-delay-16 { animation-delay: 0.32s; }
-                    .animate-delay-17 { animation-delay: 0.34s; }
-                    .animate-delay-18 { animation-delay: 0.36s; }
-                    .animate-delay-19 { animation-delay: 0.38s; }
-                    .animate-delay-20 { animation-delay: 0.4s; }
-                    .animate-delay-21 { animation-delay: 0.42s; }
-                    .animate-delay-22 { animation-delay: 0.44s; }
-                    .animate-delay-23 { animation-delay: 0.46s; }
-                    .animate-delay-24 { animation-delay: 0.48s; }
-                    .animate-delay-25 { animation-delay: 0.5s; }
-                    .animate-delay-26 { animation-delay: 0.52s; }
-                    .animate-delay-27 { animation-delay: 0.54s; }
-                    .animate-delay-28 { animation-delay: 0.56s; }
-                    .animate-delay-29 { animation-delay: 0.58s; }
-                    .animate-delay-30 { animation-delay: 0.6s; }
-                    .animate-delay-31 { animation-delay: 0.62s; }
-                    .animate-delay-32 { animation-delay: 0.64s; }
-                    .animate-delay-33 { animation-delay: 0.66s; }
-                    .animate-delay-34 { animation-delay: 0.68s; }
-                    .animate-delay-35 { animation-delay: 0.7s; }
-                    .animate-delay-36 { animation-delay: 0.72s; }
-                    .animate-delay-37 { animation-delay: 0.74s; }
-                    .animate-delay-38 { animation-delay: 0.76s; }
-                    .animate-delay-39 { animation-delay: 0.78s; }
-                    .animate-delay-40 { animation-delay: 0.8s; }
-                    .animate-delay-41 { animation-delay: 0.82s; }
-                    .animate-delay-42 { animation-delay: 0.84s; }
-                    .animate-delay-43 { animation-delay: 0.86s; }
-                    .animate-delay-44 { animation-delay: 0.88s; }
-                    .animate-delay-45 { animation-delay: 0.9s; }
-                    .animate-delay-46 { animation-delay: 0.92s; }
-                    .animate-delay-47 { animation-delay: 0.94s; }
-                    .animate-delay-48 { animation-delay: 0.96s; }
-                    .animate-delay-49 { animation-delay: 0.98s; }
-                    .animate-delay-50 { animation-delay: 1.0s; }
-                    .animate-delay-52 { animation-delay: 1.04s; }
-                    .animate-delay-54 { animation-delay: 1.08s; }
-                    .animate-delay-56 { animation-delay: 1.12s; }
-                    .animate-delay-58 { animation-delay: 1.16s; }
-                    .animate-delay-60 { animation-delay: 1.2s; }
-                    .animate-delay-62 { animation-delay: 1.24s; }
-                    .animate-delay-64 { animation-delay: 1.28s; }
-                    .animate-delay-66 { animation-delay: 1.32s; }
-                    .animate-delay-68 { animation-delay: 1.36s; }
-                    .animate-delay-70 { animation-delay: 1.4s; }
-                    .animate-delay-72 { animation-delay: 1.44s; }
-                    .animate-delay-76 { animation-delay: 1.52s; }
-                    .animate-delay-80 { animation-delay: 1.6s; }
-                    .animate-delay-84 { animation-delay: 1.68s; }
-                    .animate-delay-88 { animation-delay: 1.76s; }
-                    .animate-delay-92 { animation-delay: 1.84s; }
-                    .animate-delay-96 { animation-delay: 1.92s; }
-                    .animate-delay-100 { animation-delay: 2.0s; }
-                    .animate-delay-104 { animation-delay: 2.08s; }
-                    .animate-delay-108 { animation-delay: 2.16s; }
-                    .animate-delay-112 { animation-delay: 2.24s; }
-                    .animate-delay-116 { animation-delay: 2.32s; }
-                    .animate-delay-120 { animation-delay: 2.4s; }
+                    @keyframes char-opacity {
+                        0% {
+                            opacity: 0;
+                            transform: translateY(20px);
+                        }
+                        100% {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+
+                    @keyframes fadeInUp {
+                        from {
+                            opacity: 0;
+                            transform: translateY(20px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+
                     .animate-fade-in-out {
                         animation: fadeInOut 12s infinite ease-in-out;
                     }
