@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Search, Star, ShoppingCart } from 'lucide-react';
@@ -31,10 +31,10 @@ const products = [
   },
   {
     id: 3,
-    name: "Laser Projector System",
+    name: "Paper Wristband",
     price: 300,
-    description: "Advanced laser system with multiple patterns and colors",
-    category: "Laser System",
+    description: "Basic entry and access control wristbands",
+    category: "Wristband And Access",
     rating: 4.7,
     image: "/placeholder.jpg",
     featured: false
@@ -51,10 +51,10 @@ const products = [
   },
   {
     id: 5,
-    name: "Moving Head Spotlight",
+    name: "LED Wristband",
     price: 400,
-    description: "Professional moving head with gobo and color effects",
-    category: "Laser System",
+    description: "Light-up wristbands for special effects",
+    category: "Wristband And Access",
     rating: 4.9,
     image: "/placeholder.jpg",
     featured: true
@@ -73,53 +73,32 @@ const products = [
 
 export default function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [searchQuery, setSearchQuery] = useState('');
-  
-  // Get unique categories
-  const categories = ['All', ...new Set(products.map(product => product.category))];
-  
-  // Filter products based on category and search query
+  const [sfxMachinesDragging, setSfxMachinesDragging] = useState(false);
+  const [wristbandDragging, setWristbandDragging] = useState(false);
+  const [glowgearDragging, setGlowgearDragging] = useState(false);
+  const [sfxMachinesPaused, setSfxMachinesPaused] = useState(false);
+  const [wristbandPaused, setWristbandPaused] = useState(false);
+  const [glowgearPaused, setGlowgearPaused] = useState(false);
+
+  // Get unique categories (excluding Laser System, adding Wristband And Access, with Glow Gears last)
+  const categories = ['All', 'SFX Machines', 'Wristband And Access', 'Glow Gears', 'Staff Essentials & VIP Experience'];
+
+  // Filter products based on category only
   const filteredProducts = products.filter(product => {
     const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          product.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+    return matchesCategory;
   });
 
   return (
     <div className="min-h-screen bg-black text-white pt-24">
       <Navbar />
-      
-      {/* Products Header */}
-      <div className="py-12 px-6">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold text-center mb-4">
-            Our Products
-          </h1>
-          <p className="text-neutral-300 text-center max-w-2xl mx-auto">
-            Premium equipment for all your event needs. Browse our collection of professional-grade SFX machines, laser systems, and glow gear.
-          </p>
-        </div>
-      </div>
-      
-      {/* Search and Filter Section */}
+
+      {/* Category Filter Section */}
       <div className="py-6 px-6 bg-gray-900">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            {/* Search Bar */}
-            <div className="relative w-full md:w-1/3">
-              <input
-                type="text"
-                placeholder="Search products..."
-                className="w-full bg-gray-800 text-white rounded-full py-3 px-5 pl-12 focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            </div>
-
+          <div className="flex justify-center">
             {/* Category Filter */}
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 justify-center">
               {categories.map((category) => (
                 <button
                   key={category}
@@ -128,7 +107,34 @@ export default function ProductsPage() {
                       ? 'bg-yellow-500 text-black'
                       : 'bg-gray-800 text-white hover:bg-gray-700'
                   }`}
-                  onClick={() => setSelectedCategory(category)}
+                  onClick={() => {
+                    // First update the selected category
+                    setSelectedCategory(category);
+                    // Then scroll to the corresponding section after a brief delay with proper offset
+                    setTimeout(() => {
+                      let element;
+                      if (category === 'SFX Machines') {
+                        element = document.getElementById('sfx-machines-section');
+                      } else if (category === 'Wristband And Access') {
+                        element = document.getElementById('wristband-section');
+                      } else if (category === 'Glow Gears') {
+                        element = document.getElementById('glowgear-section');
+                      } else if (category === 'Staff Essentials & VIP Experience') {
+                        element = document.getElementById('staff-vip-section');
+                      }
+
+                      if (element) {
+                        const offsetTop = element.offsetTop - 100; // Subtract 100px to account for navbar and ensure title is visible
+                        window.scrollTo({
+                          top: offsetTop,
+                          behavior: 'smooth'
+                        });
+                      } else if (category === 'All') {
+                        // For 'All', scroll to top
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
+                    }, 100); // Small delay to ensure the state updates first
+                  }}
                 >
                   {category}
                 </button>
@@ -138,8 +144,8 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      {/* Category Title */}
-      <div className="py-8 px-6">
+      {/* SFX Machines Section */}
+      <div className="py-8 px-6" id="sfx-machines-section">
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-extrabold text-center text-white">
             Stage Effect Machine
@@ -149,21 +155,46 @@ export default function ProductsPage() {
             reliability and performance, our machines deliver stunning stage visuals and crowd effects
             used by top production teams.
           </p>
+          <div className="mt-6">
+            <a
+              href="https://forms.gle/kAAdjqfRY2qaafqb9"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg transition-colors duration-300"
+            >
+              Book Now
+            </a>
+          </div>
         </div>
       </div>
 
       {/* Rotating Feature Images Section - Marquee Style */}
-      <div className="py-6 px-6">
+      <div className="py-4 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="relative h-64 md:h-80 overflow-hidden rounded-xl [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]">
             <motion.div
               className="flex gap-4"
+              drag="x"
+              dragElastic={0.2}
+              dragMomentum={false}
+              onDragStart={() => {
+                setSfxMachinesDragging(true);
+                setSfxMachinesPaused(true);
+              }}
+              onDragEnd={(event, info) => {
+                setSfxMachinesDragging(false);
+                // Restart the auto-rotation after a delay to allow user to see the dragged position
+                setTimeout(() => {
+                  setSfxMachinesPaused(false);
+                }, 3000); // Resume auto-rotation after 3 seconds of no drag
+              }}
               animate={{
-                x: ["-100%", "0%"],
+                x: sfxMachinesPaused ? 0 : ["-100%", "0%"],
                 transition: {
                   ease: "linear",
-                  duration: 30,
+                  duration: sfxMachinesPaused ? 0 : (typeof window !== 'undefined' && window.innerWidth <= 768 ? 15 : 30),
                   repeat: Infinity,
+                  repeatType: "loop",
                 },
               }}
             >
@@ -199,66 +230,86 @@ export default function ProductsPage() {
       </div>
 
       {/* SFX Machines Section */}
-      <div className="py-12 px-6">
+      <div className="py-6 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-              <h3 className="text-lg font-bold text-white mb-2">BUBBLE MACHINE</h3>
-              <p className="text-sm text-neutral-300">Create dreamy bubble effects</p>
+          <div className="grid grid-cols-2 gap-6">
+            {/* Left Column with requested machines */}
+            <div className="space-y-3">
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">CO2 JET MACHINE</h3>
+                <p className="text-sm text-neutral-300">Dramatic low-lying fog effects</p>
+              </div>
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">CONFETTI MACHINE</h3>
+                <p className="text-sm text-neutral-300">Perfect for celebrations</p>
+              </div>
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">FOG MACHINE</h3>
+                <p className="text-sm text-neutral-300">Classic atmospheric effects</p>
+              </div>
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">SNOW MACHINE</h3>
+                <p className="text-sm text-neutral-300">Realistic snow effects</p>
+              </div>
             </div>
-            <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-              <h3 className="text-lg font-bold text-white mb-2">SNOW MACHINE</h3>
-              <p className="text-sm text-neutral-300">Realistic snow effects</p>
-            </div>
-            <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-              <h3 className="text-lg font-bold text-white mb-2">FOG MACHINE</h3>
-              <p className="text-sm text-neutral-300">Classic atmospheric effects</p>
-            </div>
-            <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-              <h3 className="text-lg font-bold text-white mb-2">COLD SPARK MACHINE</h3>
-              <p className="text-sm text-neutral-300">Safe, cool sparks up to 3 meters</p>
-            </div>
-            <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-              <h3 className="text-lg font-bold text-white mb-2">FLAME MACHINE</h3>
-              <p className="text-sm text-neutral-300">Realistic fire effects safely contained</p>
-            </div>
-            <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-              <h3 className="text-lg font-bold text-white mb-2">CONFETTI MACHINE</h3>
-              <p className="text-sm text-neutral-300">Perfect for celebrations</p>
-            </div>
-            <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-              <h3 className="text-lg font-bold text-white mb-2">CO2 JET MACHINE</h3>
-              <p className="text-sm text-neutral-300">Dramatic low-lying fog effects</p>
-            </div>
-            <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-              <h3 className="text-lg font-bold text-white mb-2">SFX CONTROLLER &amp; ACCESSORIES</h3>
-              <p className="text-sm text-neutral-300">Wireless control systems</p>
+            {/* Right Column with specified machines in order */}
+            <div className="space-y-3">
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">FLAME MACHINE</h3>
+                <p className="text-sm text-neutral-300">Realistic fire effects safely contained</p>
+              </div>
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">COLD SPARK MACHINE</h3>
+                <p className="text-sm text-neutral-300">Safe, cool sparks up to 3 meters</p>
+              </div>
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">BUBBLE MACHINE</h3>
+                <p className="text-sm text-neutral-300">Create dreamy bubble effects</p>
+              </div>
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">SFX CONTROLLER &amp; ACCESSORIES</h3>
+                <p className="text-sm text-neutral-300">Wireless control systems</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Wristband And Access Section */}
-      <div className="py-12 px-6">
+      <div className="py-12 px-6" id="wristband-section">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-4">
             Wristband And Access
           </h2>
-          <p className="text-center text-neutral-300 mb-8 max-w-3xl mx-auto">
+          <p className="text-center text-neutral-300 mb-4 max-w-3xl mx-auto">
             Event control and identification essentials. Efficient, stylish, and customizable solutions for
             access management and branding.
           </p>
 
           {/* Rotating Wristband Images Section - Marquee Style */}
-          <div className="py-6 mb-12">
+          <div className="py-4 px-6">
             <div className="relative h-64 md:h-80 overflow-hidden rounded-xl [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]">
               <motion.div
                 className="flex gap-4"
+                drag="x"
+                dragElastic={0.2}
+                dragMomentum={false}
+                onDragStart={() => {
+                  setWristbandDragging(true);
+                  setWristbandPaused(true);
+                }}
+                onDragEnd={() => {
+                  setWristbandDragging(false);
+                  // Restart the auto-rotation after a delay to allow user to see the dragged position
+                  setTimeout(() => {
+                    setWristbandPaused(false);
+                  }, 3000); // Resume auto-rotation after 3 seconds of no drag
+                }}
                 animate={{
-                  x: ["-100%", "0%"],
+                  x: wristbandPaused ? 0 : ["-100%", "0%"],
                   transition: {
                     ease: "linear",
-                    duration: 30,
+                    duration: wristbandPaused ? 0 : (typeof window !== 'undefined' && window.innerWidth <= 768 ? 15 : 30),
                     repeat: Infinity,
                   },
                 }}
@@ -296,54 +347,53 @@ export default function ProductsPage() {
       </div>
 
       {/* Wristband Accessories Section */}
-      <div className="py-8 px-6">
+      <div className="py-6 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-              <h3 className="text-lg font-bold text-white mb-2">PAPER WRISTBAND</h3>
-              <p className="text-sm text-neutral-300">Basic entry and access control</p>
+          <div className="grid grid-cols-2 gap-6">
+            {/* Left Column with specified wristband items */}
+            <div className="space-y-3">
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">PAPER WRISTBAND</h3>
+                <p className="text-sm text-neutral-300">Basic entry and access control</p>
+              </div>
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">LED WRISTBAND</h3>
+                <p className="text-sm text-neutral-300">Light-up for special effects</p>
+              </div>
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">CUSTOM LANYARD</h3>
+                <p className="text-sm text-neutral-300">Branded identification solutions</p>
+              </div>
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">NAME TAGS</h3>
+                <p className="text-sm text-neutral-300">Professional identification</p>
+              </div>
             </div>
-
-            <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-              <h3 className="text-lg font-bold text-white mb-2">LED WRISTBAND</h3>
-              <p className="text-sm text-neutral-300">Light-up for special effects</p>
-            </div>
-
-            <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-              <h3 className="text-lg font-bold text-white mb-2">CUSTOM LANYARD</h3>
-              <p className="text-sm text-neutral-300">Branded identification solutions</p>
-            </div>
-
-            <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-              <h3 className="text-lg font-bold text-white mb-2">NAME TAGS</h3>
-              <p className="text-sm text-neutral-300">Professional identification</p>
-            </div>
-
-            <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-              <h3 className="text-lg font-bold text-white mb-2">FABRIC / SILICON WRISTBAND</h3>
-              <p className="text-sm text-neutral-300">Durable and comfortable</p>
-            </div>
-
-            <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-              <h3 className="text-lg font-bold text-white mb-2">RFID WRISTBAND</h3>
-              <p className="text-sm text-neutral-300">Contactless access technology</p>
-            </div>
-
-            <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-              <h3 className="text-lg font-bold text-white mb-2">UV-REACTION WRISTBAND</h3>
-              <p className="text-sm text-neutral-300">Glow under blacklight</p>
-            </div>
-
-            <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-              <h3 className="text-lg font-bold text-white mb-2">LED BADGE</h3>
-              <p className="text-sm text-neutral-300">Customizable light-up tags</p>
+            {/* Right Column with remaining wristband items */}
+            <div className="space-y-3">
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">FABRIC / SILICON WRISTBAND</h3>
+                <p className="text-sm text-neutral-300">Durable and comfortable</p>
+              </div>
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">RFID WRISTBAND</h3>
+                <p className="text-sm text-neutral-300">Contactless access technology</p>
+              </div>
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">UV-REACTION WRISTBAND</h3>
+                <p className="text-sm text-neutral-300">Glow under blacklight</p>
+              </div>
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">LED BADGE</h3>
+                <p className="text-sm text-neutral-300">Customizable light-up tags</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* GlowGear Section */}
-      <div className="py-16 px-6 bg-gradient-to-b from-black to-gray-900">
+      <div className="py-16 px-6 bg-black" id="glowgear-section">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
@@ -357,15 +407,29 @@ export default function ProductsPage() {
           </div>
 
           {/* Rotating GlowGear Images Section - Marquee Style */}
-          <div className="py-8">
+          <div className="py-4">
             <div className="relative h-64 md:h-80 overflow-hidden rounded-xl [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]">
               <motion.div
                 className="flex gap-4"
+                drag="x"
+                dragElastic={0.2}
+                dragMomentum={false}
+                onDragStart={() => {
+                  setGlowgearDragging(true);
+                  setGlowgearPaused(true);
+                }}
+                onDragEnd={() => {
+                  setGlowgearDragging(false);
+                  // Restart the auto-rotation after a delay to allow user to see the dragged position
+                  setTimeout(() => {
+                    setGlowgearPaused(false);
+                  }, 3000); // Resume auto-rotation after 3 seconds of no drag
+                }}
                 animate={{
-                  x: ["-100%", "0%"],
+                  x: glowgearPaused ? 0 : ["-100%", "0%"],
                   transition: {
                     ease: "linear",
-                    duration: 30,
+                    duration: glowgearPaused ? 0 : (typeof window !== 'undefined' && window.innerWidth <= 768 ? 15 : 30),
                     repeat: Infinity,
                   },
                 }}
@@ -401,46 +465,116 @@ export default function ProductsPage() {
           </div>
 
           {/* GlowGear Categories */}
-          <div className="py-12">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-                <h3 className="text-lg font-bold text-white mb-2">LED GLOW STICK</h3>
-                <p className="text-sm text-neutral-300">Classic light-up party accessories</p>
+          <div className="py-6">
+            <div className="grid grid-cols-2 gap-6">
+              {/* Left Column with specified glow gear items */}
+              <div className="space-y-3">
+                <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                  <h3 className="text-lg font-bold text-white mb-2">LED GLOW STICK</h3>
+                  <p className="text-sm text-neutral-300">Classic light-up party accessories</p>
+                </div>
+                <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                  <h3 className="text-lg font-bold text-white mb-2">LED FOAM BATONS</h3>
+                  <p className="text-sm text-neutral-300">Safe glow sticks for dancing</p>
+                </div>
+                <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                  <h3 className="text-lg font-bold text-white mb-2">LED NECKLACE</h3>
+                  <p className="text-sm text-neutral-300">Fashionable light-up jewelry</p>
+                </div>
+                <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                  <h3 className="text-lg font-bold text-white mb-2">LED FLOWER CROWNS</h3>
+                  <p className="text-sm text-neutral-300">Enchanting illuminated headwear</p>
+                </div>
+                <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                  <h3 className="text-lg font-bold text-white mb-2">LED GLASSES / SHADES</h3>
+                  <p className="text-sm text-neutral-300">Light-up eyewear for night events</p>
+                </div>
               </div>
-
-              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-                <h3 className="text-lg font-bold text-white mb-2">LED FOAM BATONS</h3>
-                <p className="text-sm text-neutral-300">Safe glow sticks for dancing</p>
+              {/* Right Column with remaining glow gear items */}
+              <div className="space-y-3">
+                <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                  <h3 className="text-lg font-bold text-white mb-2">GLOW PAINT / BODY PAINT</h3>
+                  <p className="text-sm text-neutral-300">UV reactive body art materials</p>
+                </div>
+                <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                  <h3 className="text-lg font-bold text-white mb-2">GLOW BRACELETS & RINGS</h3>
+                  <p className="text-sm text-neutral-300">Light-up accessories for hands</p>
+                </div>
+                <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                  <h3 className="text-lg font-bold text-white mb-2">GLOW SHOELACES</h3>
+                  <p className="text-sm text-neutral-300">Illuminated footwear accessories</p>
+                </div>
+                <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                  <h3 className="text-lg font-bold text-white mb-2">LED EARRING / JEWELRY</h3>
+                  <p className="text-sm text-neutral-300">Light-up accessories</p>
+                </div>
+                <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                  <h3 className="text-lg font-bold text-white mb-2">MORE......</h3>
+                  <p className="text-sm text-neutral-300">Additional glow items</p>
+                </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      {/* Staff Essentials AND VIP Experience Section */}
+      <div className="py-6 px-6 bg-gradient-to-b from-black to-gray-900" id="staff-vip-section">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-center text-white mb-4">
+            Staff Essentials & VIP Experience
+          </h2>
+          <p className="text-xl text-neutral-300 text-center max-w-4xl mx-auto leading-relaxed mb-8">
+            Our Staff Essentials ensure event crews and security personnel are equipped with dependable, visibility-focused
+            tools for seamless operations, while our VIP & Experience selection adds a touch of sophistication through
+            premium, light-enhanced accessories designed to create unforgettable moments for high-tier guests and exclusive
+            areas.
+          </p>
+          <div className="grid grid-cols-2 gap-6">
+            {/* Left Column with specified items */}
+            <div className="space-y-3">
               <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-                <h3 className="text-lg font-bold text-white mb-2">LED NECKLACE</h3>
-                <p className="text-sm text-neutral-300">Fashionable light-up jewelry</p>
+                <h3 className="text-lg font-bold text-white mb-2">CUSTOM LANYARD</h3>
+                <p className="text-sm text-neutral-300">Professional identification accessories</p>
               </div>
-
               <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-                <h3 className="text-lg font-bold text-white mb-2">LED FLOWER CROWNS</h3>
-                <p className="text-sm text-neutral-300">Enchanting illuminated headwear</p>
+                <h3 className="text-lg font-bold text-white mb-2">LIGHT UP BADGES / CLIP PINS</h3>
+                <p className="text-sm text-neutral-300">Illuminated identification for events</p>
               </div>
-
               <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-                <h3 className="text-lg font-bold text-white mb-2">LED GLASSES / SHADES</h3>
-                <p className="text-sm text-neutral-300">Light-up eyewear for night events</p>
+                <h3 className="text-lg font-bold text-white mb-2">MINI FLASH LIGHT</h3>
+                <p className="text-sm text-neutral-300">Compact lighting solutions</p>
               </div>
-
               <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-                <h3 className="text-lg font-bold text-white mb-2">GLOW PAINT / BODY PAINT</h3>
-                <p className="text-sm text-neutral-300">UV reactive body art materials</p>
+                <h3 className="text-lg font-bold text-white mb-2">MINI HAND FANS</h3>
+                <p className="text-sm text-neutral-300">Personal cooling accessories</p>
               </div>
-
               <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-                <h3 className="text-lg font-bold text-white mb-2">GLOW BRACELETS & RINGS</h3>
-                <p className="text-sm text-neutral-300">Light-up accessories for hands</p>
+                <h3 className="text-lg font-bold text-white mb-2">KEYCHAINS / ACCESS TAGS</h3>
+                <p className="text-sm text-neutral-300">Personalized identification accessories</p>
               </div>
-
+            </div>
+            {/* Right Column with specified items */}
+            <div className="space-y-3">
               <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
-                <h3 className="text-lg font-bold text-white mb-2">GLOW SHOELACES</h3>
-                <p className="text-sm text-neutral-300">Illuminated footwear accessories</p>
+                <h3 className="text-lg font-bold text-white mb-2">LED CUP / BOTTLES</h3>
+                <p className="text-sm text-neutral-300">Illuminated beverage accessories</p>
+              </div>
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">GLOW IN THE DARK GIFT BAG</h3>
+                <p className="text-sm text-neutral-300">Luminous packaging solutions</p>
+              </div>
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">LIGHT UP NECK TAGS</h3>
+                <p className="text-sm text-neutral-300">Illuminated identification tags</p>
+              </div>
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">SMALL LED DECOR (FOR TABLE & LOUNGE)</h3>
+                <p className="text-sm text-neutral-300">Ambient lighting for premium areas</p>
+              </div>
+              <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
+                <h3 className="text-lg font-bold text-white mb-2">MORE......</h3>
+                <p className="text-sm text-neutral-300">Additional premium items</p>
               </div>
             </div>
           </div>

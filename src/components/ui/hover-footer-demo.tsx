@@ -90,25 +90,25 @@ function HoverFooter() {
           ))}
 
           {/* Contact section */}
-          <div className="sm:items-center sm:text-center">
-            <h4 className="text-white text-xl md:text-2xl font-semibold mb-6 sm:text-center">
+          <div className="text-left sm:text-left">
+            <h4 className="text-white text-xl md:text-2xl font-semibold mb-6 sm:text-left">
               Contact Us
             </h4>
-            <ul className="space-y-4 lg:space-y-3 text-left sm:text-center">
+            <ul className="space-y-4 lg:space-y-3 text-left sm:text-left">
               {contactInfo.map((item, i) => (
-                <li key={i} className="flex lg:flex-row lg:items-center lg:space-x-3 sm:justify-center sm:flex-col sm:items-center sm:space-x-0 sm:space-y-1">
-                  <span className="lg:mt-0 flex-shrink-0">
+                <li key={i} className="flex items-center space-x-4">
+                  <span className="flex-shrink-0">
                     {item.icon}
                   </span>
                   {item.href ? (
                     <a
                       href={item.href}
-                      className="text-white hover:text-yellow-400 transition-colors mt-1 sm:mt-0"
+                      className="text-white hover:text-yellow-400 transition-colors"
                     >
                       {item.text}
                     </a>
                   ) : (
-                    <span className="text-white hover:text-yellow-400 transition-colors mt-1 sm:mt-0">
+                    <span className="text-white hover:text-yellow-400 transition-colors">
                       {item.text}
                     </span>
                   )}

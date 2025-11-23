@@ -1,7 +1,4 @@
 import { AnimatedMarqueeHero } from "@/components/ui/hero-3";
-import Modal from '@/components/Modal';
-import GoogleForm from '@/components/GoogleForm';
-import { useState } from 'react';
 
 // A list of local image paths for the demo
 const DEMO_IMAGES = [
@@ -18,41 +15,39 @@ const DEMO_IMAGES = [
 ];
 
 const AnimatedHeroDemo = () => {
-  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
-
   // Google Form URL for booking services
   const bookingFormUrl = "https://forms.gle/kAAdjqfRY2qaafqb9";
 
   const handleBookNowClick = () => {
-    setIsBookingModalOpen(true);
+    window.open(bookingFormUrl, '_blank', 'noopener,noreferrer');
   };
 
   return (
-    <>
-      <AnimatedMarqueeHero
-        tagline=""
-        title={
+    <AnimatedMarqueeHero
+      tagline=""
+      title={
+        <div className="flex flex-col items-center">
           <img
             src="/FX LOGO.png"
             alt="FX Logo"
-            className="w-64 h-64 md:w-80 md:h-80 object-contain mx-auto my-2"
+            className="w-64 h-64 md:w-80 md:h-80 object-contain mx-auto mt-8"
           />
-        }
-        description="Providing Stage Effect Machines SFX and Event Essentials"
-        ctaText="Book Now"
-        ctaOnClick={handleBookNowClick}
-        images={DEMO_IMAGES}
-        className="bg-black"
-      />
-      {/* Booking Modal */}
-      <Modal isOpen={isBookingModalOpen} onClose={() => setIsBookingModalOpen(false)}>
-        <GoogleForm
-          formUrl={bookingFormUrl}
-          title="Booking Form"
-          description="Please fill out all required fields"
-        />
-      </Modal>
-    </>
+          <div className="text-center mt-1">
+            <div className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-2">
+              <span className="text-[#C76F1A]">WE DON'T JUST SUPPLY EFFECTS</span>
+            </div>
+            <div className="text-4xl md:text-5xl lg:text-6xl font-extrabold">
+              <span className="text-white">WE CREATE ATMOSPHERES</span>
+            </div>
+          </div>
+        </div>
+      }
+      description="Providing Stage Effect Machines SFX and Event Essentials"
+      ctaText="Book Now"
+      ctaOnClick={handleBookNowClick}
+      images={DEMO_IMAGES}
+      className="bg-black"
+    />
   );
 };
 

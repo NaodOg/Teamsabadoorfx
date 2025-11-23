@@ -267,7 +267,7 @@ export default function Home() {
                             <MonitorSpeaker className="w-16 h-16 text-white" />
                             <h3 className="text-white text-xl font-semibold mt-6 mb-2 text-center">Equipment Rental</h3>
                             <p className="text-neutral-300 text-center text-base max-w-xs mx-auto">
-                                SFX machines, laser systems, and glow gears available for rent.
+                                SFX machines, Laser systems, Glow gears, VIP Essentials
                             </p>
                         </motion.div>
 

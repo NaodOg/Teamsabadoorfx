@@ -2,15 +2,14 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Modal from '@/components/Modal';
-import GoogleForm from '@/components/GoogleForm';
-import { useState } from 'react';
 
 export default function HeroSection() {
-  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
-
   // Google Form URL for booking services
   const bookingFormUrl = "https://forms.gle/kAAdjqfRY2qaafqb9";
+
+  const handleBookNowClick = () => {
+    window.open(bookingFormUrl, '_blank', 'noopener,noreferrer');
+  };
 
   return (
     <section className="w-full bg-[#0b0b0b] py-20 px-6">
@@ -68,23 +67,14 @@ export default function HeroSection() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setIsBookingModalOpen(true)}
-              className="bg-green-800 hover:bg-green-700 text-white px-6 py-3 rounded-md text-base md:text-lg font-medium transition-all duration-200"
+              onClick={handleBookNowClick}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg transition-colors duration-300 text-base md:text-lg"
             >
               Book Now
             </motion.button>
           </div>
         </motion.div>
       </div>
-
-      {/* Booking Modal */}
-      <Modal isOpen={isBookingModalOpen} onClose={() => setIsBookingModalOpen(false)}>
-        <GoogleForm
-          formUrl={bookingFormUrl}
-          title="Booking Form"
-          description="Please fill out all required fields"
-        />
-      </Modal>
     </section>
   );
 }
