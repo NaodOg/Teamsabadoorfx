@@ -30,7 +30,7 @@ const AnimatedHeroDemo = () => {
           <img
             src="/FX LOGO.png"
             alt="FX Logo"
-            className="w-64 h-64 md:w-80 md:h-80 object-contain mx-auto mt-8"
+            className="w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 object-contain mx-auto mt-12"
           />
           <div className="text-center mt-1">
             <div className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-2">
