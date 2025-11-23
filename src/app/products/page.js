@@ -203,10 +203,28 @@ export default function ProductsPage() {
                 "/coldsparkimage.jpg",
                 "/conffetiimage.jpg",
                 "/flameimage.jpg",
+                "/image1.jpg",
+                "/image2.jpg",
+                "/image3.jpg",
+                "/image4.jpg",
+                "/image13.jpg",
+                "/image14.jpg",
+                "/image15.jpg",
+                "/image16.jpg",
+                "/image17.jpg",
                 "/co2image.jpg",
                 "/coldsparkimage.jpg",
                 "/conffetiimage.jpg",
-                "/flameimage.jpg"
+                "/flameimage.jpg",
+                "/image1.jpg",
+                "/image2.jpg",
+                "/image3.jpg",
+                "/image4.jpg",
+                "/image13.jpg",
+                "/image14.jpg",
+                "/image15.jpg",
+                "/image16.jpg",
+                "/image17.jpg"
               ].map((src, index) => (
                 <div
                   key={index}
@@ -285,6 +303,16 @@ export default function ProductsPage() {
             Event control and identification essentials. Efficient, stylish, and customizable solutions for
             access management and branding.
           </p>
+          <div className="text-center mb-8">
+            <a
+              href="https://forms.gle/nnDPgzBXpArdtKvu7"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg transition-colors duration-300"
+            >
+              Order Now
+            </a>
+          </div>
 
           {/* Rotating Wristband Images Section - Marquee Style */}
           <div className="py-4 px-6">
@@ -315,13 +343,21 @@ export default function ProductsPage() {
                 }}
               >
                 {[
+                  "/band1.jpg",
                   "/wristband.jpg",
+                  "/band3.jpg",
                   "/ledbadge.jpg",
+                  "/band2.jpg",
                   "/eventbands2.jpg",
+                  "/band4.jpg",
                   "/wristband2.jpg",
+                  "/band1.jpg",
                   "/wristband.jpg",
+                  "/band3.jpg",
                   "/ledbadge.jpg",
+                  "/band2.jpg",
                   "/eventbands2.jpg",
+                  "/band4.jpg",
                   "/wristband2.jpg"
                 ].map((src, index) => (
                   <div
@@ -404,6 +440,16 @@ export default function ProductsPage() {
               Fun, crowd-lighting accessories perfect for night events and festivals. Turn your audience into an
               immersive experience.
             </p>
+            <div className="mt-6">
+              <a
+                href="https://forms.gle/nnDPgzBXpArdtKvu7"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg transition-colors duration-300"
+              >
+                Order Now
+              </a>
+            </div>
           </div>
 
           {/* Rotating GlowGear Images Section - Marquee Style */}
@@ -530,6 +576,16 @@ export default function ProductsPage() {
             premium, light-enhanced accessories designed to create unforgettable moments for high-tier guests and exclusive
             areas.
           </p>
+          <div className="text-center mb-8">
+            <a
+              href="https://forms.gle/nnDPgzBXpArdtKvu7"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg transition-colors duration-300"
+            >
+              Order Now
+            </a>
+          </div>
           <div className="grid grid-cols-2 gap-6">
             {/* Left Column with specified items */}
             <div className="space-y-3">

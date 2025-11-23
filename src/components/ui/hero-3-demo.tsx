@@ -7,11 +7,25 @@ const DEMO_IMAGES = [
   "/image3.jpg",
   "/image4.jpg",
   "/image5.jpg",
+  "/image6.jpg",
+  "/image8.jpg",
+  "/image9.jpg",
+  "/image10.jpg",
+  "/image11.jpg",
+  "/image12.jpg",
+  "/image13.jpg",
   "/image1.jpg",
   "/image2.jpg",
   "/image3.jpg",
   "/image4.jpg",
   "/image5.jpg",
+  "/image6.jpg",
+  "/image8.jpg",
+  "/image9.jpg",
+  "/image10.jpg",
+  "/image11.jpg",
+  "/image12.jpg",
+  "/image13.jpg",
 ];
 
 const AnimatedHeroDemo = () => {
@@ -30,14 +44,12 @@ const AnimatedHeroDemo = () => {
           <img
             src="/FX LOGO.png"
             alt="FX Logo"
-            className="w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 object-contain mx-auto mt-12"
+            className="w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 object-contain mx-auto mt-20"
           />
-          <div className="text-center mt-1">
-            <div className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-2">
-              <span className="text-[#C76F1A]">WE DON'T JUST SUPPLY EFFECTS</span>
-            </div>
-            <div className="text-4xl md:text-5xl lg:text-6xl font-extrabold">
-              <span className="text-white">WE CREATE ATMOSPHERES</span>
+          <div className="mt-1 px-4 w-full">
+            <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-center leading-tight sm:leading-normal tracking-wide">
+              <div className="text-[#C76F1A] text-lg sm:text-xl md:text-2xl lg:text-3xl mb-2">WE DON'T JUST SUPPLY EFFECTS</div>
+              <div className="text-white">WE CREATE ATMOSPHERES</div>
             </div>
           </div>
         </div>

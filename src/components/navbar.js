@@ -17,7 +17,7 @@ const navigationLinks = [
         name: 'Main',
         items: [
             { href: '/', label: 'Home', active: true },
-            { href: '/TeamSabadoorFX.Store Profile.pdf', label: 'About Us' },
+            { href: '/about', label: 'About Us' },
             { href: '/products', label: 'Products' },
             { href: '/contact', label: 'Contact Us' },
         ],
@@ -52,7 +52,7 @@ export default function Navbar() {
                                 data-active={link.active}
                                 className="rounded-md px-3 py-1.5 font-medium text-yellow-400 hover:text-yellow-300"
                             >
-                                <Link>{link.label}</Link>
+                                <Link href={link.href}>{link.label}</Link>
                             </NavigationMenuLink>
                         </NavigationMenuItem>
                     ))}
