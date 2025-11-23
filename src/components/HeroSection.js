@@ -28,7 +28,7 @@ export default function HeroSection() {
             className="w-full h-full overflow-hidden rounded-lg"
           >
             <Image
-              src="/image10.jpeg"
+              src="/image10.jpg"
               alt="TeamsabadorFX"
               width={600}
               height={500}
