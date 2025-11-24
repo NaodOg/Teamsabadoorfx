@@ -278,7 +278,7 @@ export default function ProductsPage() {
               </div>
               <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
                 <h3 className="text-lg font-bold text-white mb-2">COLD SPARK MACHINE</h3>
-                <p className="text-sm text-neutral-300">Safe, cool sparks up to 3 meters</p>
+                <p className="text-sm text-neutral-300">Safe, cool sparks up to 5-7 meters</p>
               </div>
               <div className="bg-gradient-to-r from-purple-900/50 to-blue-900/50 p-6 rounded-xl border border-purple-700/50 hover:border-yellow-500 transition-all duration-300">
                 <h3 className="text-lg font-bold text-white mb-2">BUBBLE MACHINE</h3>
