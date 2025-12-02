@@ -34,7 +34,7 @@ export default function HeroSection() {
           transition={{ delay: 0.3, duration: 0.6 }}
         >
           <p className="text-neutral-300 text-base leading-relaxed mb-4">
-            TeamSabadoorFX.store is your trusted source for premium event FX products, crowd-engagement tools, and modern event essentials. As the newest division of EthioSabadoor Trading PLC, we bring innovation, energy, and reliability to the heart of every celebration. From glow gear and wristbands to stage effects, VIP items, and staff tools, we provide everything you need to enhance your event atmosphere and deliver unforgettable experiences.
+            TeamSabadoorFX.store is your trusted source for premium event FX products, crowd-engagement tools, and modern event essentials. We bring innovation, energy, and reliability to the heart of every celebration. From glow gear and wristbands to stage effects, VIP items, and staff tools, we provide everything you need to enhance your event atmosphere and deliver unforgettable experiences.
           </p>
         </motion.div>
 
@@ -141,7 +141,7 @@ export default function HeroSection() {
                 transition={{ delay: 0.4, duration: 0.6 }}
                 className="text-neutral-300 text-xl leading-relaxed"
               >
-                TeamSabadoorFX.store is your trusted source for premium event FX products, crowd-engagement tools, and modern event essentials. As the newest division of EthioSabadoor Trading PLC, we bring innovation, energy, and reliability to the heart of every celebration. From glow gear and wristbands to stage effects, VIP items, and staff tools, we provide everything you need to enhance your event atmosphere and deliver unforgettable experiences.
+                TeamSabadoorFX.store is your trusted source for premium event FX products, crowd-engagement tools, and modern event essentials. We bring innovation, energy, and reliability to the heart of every celebration. From glow gear and wristbands to stage effects, VIP items, and staff tools, we provide everything you need to enhance your event atmosphere and deliver unforgettable experiences.
               </motion.p>
             </motion.div>
 
