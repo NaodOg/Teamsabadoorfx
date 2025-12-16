@@ -11,6 +11,13 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "TeamsabadoorFX",
   description: "Stage effect machine, Wrist band and access, Glow Gear, Staff essentials and VIP experience",
+  icons: {
+    icon: [
+      { url: "/FX LOGO.png", sizes: "192x192" },
+      { url: "/FX LOGO.png", sizes: "32x32" },
+      { url: "/FX LOGO.png", sizes: "16x16" },
+    ],
+  },
 };
 
 export default function RootLayout({
