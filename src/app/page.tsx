@@ -2,31 +2,33 @@
 
 export default function NotFoundPage() {
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center text-white p-4">
-      <div className="text-center">
-        <div className="text-9xl font-bold text-[#C76F1A] mb-4">404</div>
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">PAGE NOT FOUND</h1>
-        <div className="border-l-2 border-[#C76F1A] h-16 mx-auto mb-6"></div>
-        <p className="text-xl text-gray-300 mb-8 max-w-md">
-          The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
-        </p>
-        <button
-          onClick={() => window.location.href = '/'}
-          className="bg-[#C76F1A] hover:bg-[#a55a15] text-white font-bold py-3 px-6 rounded-lg transition duration-300 cursor-pointer"
-        >
-          GO BACK HOME
-        </button>
-      </div>
-
-      <style jsx global>{`
-        body {
-          margin: 0;
-          padding: 0;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-          background-color: #000;
-          color: white;
-        }
-      `}</style>
+    <div style={{
+      backgroundColor: '#000',
+      color: '#fff',
+      fontFamily: 'monospace',
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      textAlign: 'center',
+      padding: '20px'
+    }}>
+      <h1 style={{ fontSize: '72px', fontWeight: 'bold', color: '#C76F1A', margin: '0 0 20px 0' }}>404</h1>
+      <h2 style={{ fontSize: '24px', fontWeight: 'normal', margin: '0 0 20px 0' }}>NOT FOUND</h2>
+      <p style={{ fontSize: '16px', marginBottom: '30px' }}>
+        The requested URL was not found on this server.
+      </p>
+      <a
+        href="/"
+        style={{
+          color: '#C76F1A',
+          textDecoration: 'underline',
+          fontSize: '16px'
+        }}
+      >
+        Go to Homepage
+      </a>
     </div>
   );
 }
